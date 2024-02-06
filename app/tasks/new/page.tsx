@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Callout, TextField } from '@radix-ui/themes';
+import { Button, Callout, Text, TextField } from '@radix-ui/themes';
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import { useForm, Controller } from "react-hook-form";
@@ -10,18 +10,25 @@ import React from 'react'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { createTaskSchema } from '@/app/validationSchemas';
+import { z } from 'zod';
 
 
-interface TaskForm {
-  title: string;
-  description: string;
-  dueDate: Date;
-}
+// interface TaskForm {
+//   title: string;
+//   description: string;
+//   dueDate: Date;
+// }
+
+type taskForm = z.infer<typeof createTaskSchema>;
 
 const newTaskPage = () => {
 
   const router = useRouter();
-  const {register, control, handleSubmit} = useForm<TaskForm>();
+  const {register, control, handleSubmit, formState: { errors }} = useForm<taskForm>({
+    resolver: zodResolver(createTaskSchema)
+  });
   const [error, setError] = useState('');
   
   return (
@@ -43,11 +50,13 @@ const newTaskPage = () => {
           <TextField.Root>
               <TextField.Input placeholder='Title' {...register('title')} />
           </TextField.Root>
+          {errors.title && <Text color='red' as='p'>{errors.title.message}</Text>}
           <Controller
             name="description"
             control={control}
             render={({field}) => <SimpleMDE placeholder='Description' {...field} />}
           />
+          {errors.description && <Text color='red' as='p'>{errors.description.message}</Text>}
           <Controller
             name="dueDate"
             control={control}
@@ -59,6 +68,7 @@ const newTaskPage = () => {
               />
             )}
           />
+          {errors.dueDate && <Text color='red' as='p'>{errors.dueDate.message}</Text>}
           <Button>Create New Task</Button>
       </form>
     </div>
