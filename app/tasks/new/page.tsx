@@ -3,45 +3,53 @@
 import { Button, TextField } from '@radix-ui/themes';
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
-//import React from 'react'
-//import DatePicker from 'react-datepicker';
-//import 'react-datepicker/dist/react-datepicker.css';
+import { useForm, Controller } from "react-hook-form";
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import React from 'react'
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
+
+interface TaskForm {
+  title: string;
+  description: string;
+  dueDate: Date;
+}
 
 const newTaskPage = () => {
 
-  // const handleDateChange = () => {
-  //   // Empty function, does nothing
-  // };
+  const router = useRouter();
+  const {register, control, handleSubmit} = useForm<TaskForm>();
   
   return (
-    <div className='max-w-xl space-y-3'>
+    <form 
+      className='max-w-xl space-y-3' 
+      onSubmit={handleSubmit(async (data) => {
+        await axios.post('/api/tasks', data);
+        router.push('/tasks')
+      })}>
         <TextField.Root>
-            <TextField.Input placeholder='Title' />
+            <TextField.Input placeholder='Title' {...register('title')} />
         </TextField.Root>
-        <SimpleMDE placeholder='Description' />
-        <div>
-          <TextField.Root>
-            <TextField.Input
-              placeholder="Due Date (YYYY-MM-DD)"
-             
+        <Controller
+          name="description"
+          control={control}
+          render={({field}) => <SimpleMDE placeholder='Description' {...field} />}
+        />
+        <Controller
+          name="dueDate"
+          control={control}
+          render={({ field }) => (
+            <DatePicker
+              selected={field.value}
+              onChange={(date: Date) => field.onChange(date)}
+              placeholderText="Due Date"
             />
-          </TextField.Root>
-        </div>
-        {/* <div className='relative'>
-        <TextField.Root>
-            <TextField.Input placeholder='Due Date' />
-            <DatePicker className='absolute top-full left-0 mt-1' onChange={handleDateChange} />
-        </TextField.Root>
-        </div>
-        <DatePicker onChange={handleDateChange} /> */}
-        
-        
-        {/* <div className='my-3 flex items-center'>
-          <span className='mr-2'>Due Date:</span>
-          <DatePicker onChange={handleDateChange} />
-        </div> */}
+          )}
+        />
         <Button>Create New Task</Button>
-    </div>
+    </form>
   )
 }
 
