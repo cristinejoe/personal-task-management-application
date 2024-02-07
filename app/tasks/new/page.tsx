@@ -68,9 +68,11 @@ const newTaskPage = () => {
             )}
           />
           <ErrorMessage>{errors.dueDate?.message}</ErrorMessage>
-          <Button disabled={isSubmitting}>
-          Create New Task{isSubmitting && <Spinner />}
-          </Button>
+          <div className='flex justify-center'>
+            <Button disabled={isSubmitting}>
+            Create New Task{isSubmitting && <Spinner />}
+            </Button>
+          </div>
       </form>
     </div>
   )

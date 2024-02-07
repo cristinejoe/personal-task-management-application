@@ -1,4 +1,6 @@
+import TaskStatusBadge from '@/app/components/TaskStatusBadge';
 import prisma from '@/prisma/client';
+import { Heading, Flex, Card, Text } from '@radix-ui/themes';
 import { notFound } from 'next/navigation';
 import React from 'react'
 
@@ -18,10 +20,14 @@ const task = await prisma.task.findUnique({
     
   return (
     <div>
-      <p>{task.title}</p>
-      <p>{task.description}</p>
-      <p>{task.status}</p>
-      <p>{task.createdAt.toDateString()}</p>
+      <Heading>{task.title}</Heading>
+      <Flex className="space-x-3" my="2">
+        <TaskStatusBadge status={task.status} />
+        <Text>{task.createdAt.toDateString()}</Text>
+      </Flex>
+      <Card>
+        <p>{task.description}</p>
+      </Card>
     </div>
   )
 }
