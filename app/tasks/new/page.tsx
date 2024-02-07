@@ -14,13 +14,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createTaskSchema } from '@/app/validationSchemas';
 import { z } from 'zod';
 
-
-// interface TaskForm {
-//   title: string;
-//   description: string;
-//   dueDate: Date;
-// }
-
 type taskForm = z.infer<typeof createTaskSchema>;
 
 const newTaskPage = () => {
@@ -63,7 +56,7 @@ const newTaskPage = () => {
             render={({ field }) => (
               <DatePicker
                 selected={field.value}
-                onChange={(date: Date) => field.onChange(date)}
+                onChange={(date: Date) => field.onChange(date.toISOString())}
                 placeholderText="Due Date"
               />
             )}
