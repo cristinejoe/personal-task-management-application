@@ -29,8 +29,8 @@ const newTaskPage = () => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       setSubmitting(true);
-      await axios.post('/api/issues', data);
-      router.push('/issues');
+      await axios.post('/api/tasks', data);
+      router.push('/tasks');
     } catch (error) {
       setSubmitting(false);
       setError('An unexpected error occurred.');

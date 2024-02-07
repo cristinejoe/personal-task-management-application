@@ -3,6 +3,7 @@ import prisma from '@/prisma/client';
 import { Heading, Flex, Card, Text } from '@radix-ui/themes';
 import { notFound } from 'next/navigation';
 import React from 'react'
+import ReactMarkdown from 'react-markdown';
 
 interface Props {
     params: { id: string }
@@ -25,8 +26,8 @@ const task = await prisma.task.findUnique({
         <TaskStatusBadge status={task.status} />
         <Text>{task.createdAt.toDateString()}</Text>
       </Flex>
-      <Card>
-        <p>{task.description}</p>
+      <Card className='prose' mt='4'>
+        <ReactMarkdown>{task.description}</ReactMarkdown>
       </Card>
     </div>
   )
