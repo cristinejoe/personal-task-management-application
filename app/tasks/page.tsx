@@ -1,19 +1,16 @@
 import React from 'react';
 import { Button, Table } from '@radix-ui/themes';
-import Link from 'next/link';
 import prisma from '@/prisma/client';
 import TaskStatusBadge from '../components/TaskStatusBadge';
+import delay from 'delay';
+import TaskActions from './TaskActions';
 
 const TasksPage = async () => {
-
-  const issues = await prisma.task.findMany();
-
+  const tasks = await prisma.task.findMany();
+  await delay(2000);
   return (
     <div>
-      <div className='mb-5'>
-        <Button>
-          <Link href='tasks/new'> New Task</Link></Button>
-      </div>
+      <TaskActions />
       <Table.Root variant='surface'>
         <Table.Header>
           <Table.Row>
@@ -23,7 +20,7 @@ const TasksPage = async () => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {issues.map(task => (
+          {tasks.map(task => (
             <Table.Row key={task.id}>
               <Table.Cell>
                 {task.title}
