@@ -14,6 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createTaskSchema } from '@/app/validationSchemas';
 import { z } from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
+import Spinner from '@/app/components/Spinner';
 
 type taskForm = z.infer<typeof createTaskSchema>;
 
@@ -24,6 +25,7 @@ const newTaskPage = () => {
     resolver: zodResolver(createTaskSchema)
   });
   const [error, setError] = useState('');
+  const [isSubmitting, setSubmitting] = useState(false);
   
   return (
     <div className='max-w-xl'>
@@ -34,9 +36,11 @@ const newTaskPage = () => {
         className='space-y-3' 
         onSubmit={handleSubmit(async (data) => {
           try {
+            setSubmitting(true);
             await axios.post('/api/tasks', data);
             router.push('/tasks')
           } catch (error) {
+            setSubmitting(false);
             setError('An unexpected error occurred.');
           }
           
@@ -63,7 +67,9 @@ const newTaskPage = () => {
             )}
           />
           <ErrorMessage>{errors.dueDate?.message}</ErrorMessage>
-          <Button>Create New Task</Button>
+          <Button disabled={isSubmitting}>
+          Create New Task{isSubmitting && <Spinner />}
+          </Button>
       </form>
     </div>
   )
