@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Table } from '@radix-ui/themes';
+import { Table } from '@radix-ui/themes';
+import Link from 'next/link';
 import prisma from '@/prisma/client';
 import TaskStatusBadge from '../components/TaskStatusBadge';
 import delay from 'delay';
@@ -23,7 +24,9 @@ const TasksPage = async () => {
           {tasks.map(task => (
             <Table.Row key={task.id}>
               <Table.Cell>
-                {task.title}
+                <Link href={`/tasks/${task.id}`}>
+                  {task.title}
+                </Link>
                 <div className='block md:hidden'>
                   <TaskStatusBadge status={task.status}/>
                 </div>
