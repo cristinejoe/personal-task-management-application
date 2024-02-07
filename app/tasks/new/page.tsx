@@ -18,7 +18,7 @@ import Spinner from '@/app/components/Spinner';
 
 type taskForm = z.infer<typeof createTaskSchema>;
 
-const newTaskPage = () => {
+const NewTaskPage = () => {
 
   const router = useRouter();
   const {register, control, handleSubmit, formState: { errors }} = useForm<taskForm>({
@@ -78,4 +78,4 @@ const newTaskPage = () => {
   )
 }
 
-export default newTaskPage
+export default NewTaskPage
