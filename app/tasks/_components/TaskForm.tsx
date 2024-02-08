@@ -32,7 +32,10 @@ const TaskForm = ({ task }: { task?: Task }) => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       setSubmitting(true);
-      await axios.post('/api/tasks', data);
+      if (task)
+        await axios.patch('/api/tasks/' + task.id, data);
+      else
+        await axios.post('/api/tasks', data);
       router.push('/tasks');
     } catch (error) {
       setSubmitting(false);
@@ -67,7 +70,7 @@ const TaskForm = ({ task }: { task?: Task }) => {
             render={({ field }) => (
               <DatePicker
                 selected={field.value}
-                onChange={(date: Date) => field.onChange(date.toISOString())}
+                onChange={(date: Date) => field.onChange(date)}
                 placeholderText="Due Date"
               />
             )}
@@ -75,7 +78,8 @@ const TaskForm = ({ task }: { task?: Task }) => {
           <ErrorMessage>{errors.dueDate?.message}</ErrorMessage>
           <div className='flex justify-center'>
             <Button disabled={isSubmitting}>
-            Create New Task{isSubmitting && <Spinner />}
+            {task ? 'Update Task' : 'Create New Task'}{' '}
+            {isSubmitting && <Spinner />}
             </Button>
           </div>
       </form>
