@@ -11,7 +11,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createTaskSchema } from '@/app/validationSchemas';
+import { taskSchema } from '@/app/validationSchemas';
 import { z } from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
@@ -19,13 +19,13 @@ import { Task } from '@prisma/client';
 
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {ssr: false});
 
-type taskFormData = z.infer<typeof createTaskSchema>;
+type taskFormData = z.infer<typeof taskSchema>;
 
 const TaskForm = ({ task }: { task?: Task }) => {
 
   const router = useRouter();
   const {register, control, handleSubmit, formState: { errors }} = useForm<taskFormData>({
-    resolver: zodResolver(createTaskSchema)
+    resolver: zodResolver(taskSchema)
   });
   const [error, setError] = useState('');
   const [isSubmitting, setSubmitting] = useState(false);
