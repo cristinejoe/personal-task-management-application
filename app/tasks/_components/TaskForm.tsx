@@ -37,6 +37,7 @@ const TaskForm = ({ task }: { task?: Task }) => {
       else
         await axios.post('/api/tasks', data);
       router.push('/tasks');
+      router.refresh();
     } catch (error) {
       setSubmitting(false);
       setError('An unexpected error occurred.');
