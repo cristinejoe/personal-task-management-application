@@ -13,7 +13,7 @@ const TasksPage = async () => {
           <Table.Row>
             <Table.ColumnHeaderCell>Task</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell className='hidden md:table-cell'>Status</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className='hidden md:table-cell'>Created</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell className='hidden md:table-cell'>Description</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell className='hidden md:table-cell'>Due Date</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
@@ -31,7 +31,7 @@ const TasksPage = async () => {
               <Table.Cell className='hidden md:table-cell'>
                 <TaskStatusBadge status={task.status}/>
               </Table.Cell>
-              <Table.Cell className='hidden md:table-cell'>{task.createdAt.toDateString()}</Table.Cell>
+              <Table.Cell className='hidden md:table-cell'>{task.description}</Table.Cell>
               <Table.Cell className='hidden md:table-cell'>{task.dueDate.toDateString()}</Table.Cell>
             </Table.Row>
           ))}
