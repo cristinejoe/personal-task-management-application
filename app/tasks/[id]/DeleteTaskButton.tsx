@@ -1,6 +1,7 @@
 'use client'
 
 import { Spinner } from '@/app/components';
+import { Cross1Icon } from '@radix-ui/react-icons';
 import { AlertDialog, Button, Flex } from '@radix-ui/themes';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -15,7 +16,7 @@ const DeleteTaskButton =  ({ taskId }: { taskId: number}) => {
         try {
           setDeleting(true);
           await axios.delete('/api/tasks/' + taskId);
-          router.push('/tasks');
+          router.push('/tasks/list');
           router.refresh();
         } catch (error) {
           setDeleting(false);
@@ -27,6 +28,7 @@ const DeleteTaskButton =  ({ taskId }: { taskId: number}) => {
         <AlertDialog.Root>
         <AlertDialog.Trigger>
           <Button color="red" disabled={isDeleting}>
+          <Cross1Icon />
             Delete Task
             {isDeleting && <Spinner />}
           </Button>
