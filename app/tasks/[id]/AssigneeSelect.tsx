@@ -13,31 +13,30 @@ const AssigneeSelect = ({ task }: { task: Task }) => {
     data: users,
     error,
     isLoading,
-  } = useQuery<User[]>({
-    queryKey: ["users"],
-    queryFn: () =>
-      axios.get("/api/users").then((res) => res.data),
-    staleTime: 60 * 1000, //60s
-    retry: 3,
-  });
+  } = useUsers();
 
   if (isLoading) return <Skeleton />;
 
   if (error) return null;
 
+  const assignTask = (userId: string) => {
+    const newUserId = userId === " " ? null : userId;
+    try {
+      axios.patch("/api/tasks/" + task.id, {
+        assignedToUserId: newUserId || null,
+      });
+      toast.success('Assignee updated successfully.');
+      
+    } catch (error) {
+      toast.error('Changes could not be saved.');
+    }
+  };
+
   return (
     <>
       <Select.Root
         defaultValue={task.assignedToUserId || " "}
-        onValueChange={(userId) => {
-          const newUserId = userId === " " ? null : userId;
-          axios.patch("/api/tasks/" + task.id, {
-            assignedToUserId: newUserId || null,
-          })
-          .catch(() => {
-            toast.error('Changes could not be saved.');
-          });
-        }}
+        onValueChange={assignTask}
       >
         <Select.Trigger placeholder="Assign..." />
         <Select.Content>
@@ -56,5 +55,13 @@ const AssigneeSelect = ({ task }: { task: Task }) => {
     </>
   );
 };
+
+const useUsers = () => useQuery<User[]>({
+  queryKey: ["users"],
+  queryFn: () =>
+    axios.get("/api/users").then((res) => res.data),
+  staleTime: 60 * 1000, //60s
+  retry: 3,
+});
 
 export default AssigneeSelect
