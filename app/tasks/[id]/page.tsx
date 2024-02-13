@@ -32,7 +32,7 @@ const task = await prisma.task.findUnique({
       {session && (
         <Box>
           <Flex direction="column" gap="4">
-            <AssigneeSelect />
+            <AssigneeSelect task={task} />
             <EditTaskButton taskId={task.id} />
             <DeleteTaskButton taskId={task.id} />
           </Flex>
