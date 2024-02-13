@@ -1,12 +1,12 @@
+import authOptions from '@/app/auth/authOptions';
 import prisma from '@/prisma/client';
 import { Box, Flex, Grid } from '@radix-ui/themes';
+import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';
+import AssigneeSelect from './AssigneeSelect';
+import DeleteTaskButton from './DeleteTaskButton';
 import EditTaskButton from './EditTaskButton';
 import TaskDetails from './TaskDetails';
-import DeleteTaskButton from './DeleteTaskButton';
-import { getServerSession } from 'next-auth';
-import authOptions from '@/app/auth/authOptions';
-import { NextResponse } from 'next/server';
 
 interface Props {
     params: { id: string }
@@ -32,6 +32,7 @@ const task = await prisma.task.findUnique({
       {session && (
         <Box>
           <Flex direction="column" gap="4">
+            <AssigneeSelect />
             <EditTaskButton taskId={task.id} />
             <DeleteTaskButton taskId={task.id} />
           </Flex>
