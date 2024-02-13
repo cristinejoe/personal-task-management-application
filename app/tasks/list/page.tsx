@@ -39,10 +39,17 @@ const TasksPage = async ({ searchParams }: Props) => {
     ? searchParams.status
     : undefined;
 
+  const orderBy = columns
+  .map(column => column.value)
+  .includes(searchParams.orderBy)
+  ? { [searchParams.orderBy]: 'asc' }
+  : undefined;
+
   const tasks = await prisma.task.findMany({
     where: {
       status,
     },
+    orderBy
   });
   return (
     <div>
