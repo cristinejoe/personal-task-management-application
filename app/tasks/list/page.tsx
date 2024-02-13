@@ -1,13 +1,17 @@
+import { Link, TaskStatusBadge } from '@/app/components';
+import Pagination from "@/app/components/Pagination";
 import prisma from '@/prisma/client';
-import { Table } from '@radix-ui/themes';
-import {TaskStatusBadge, Link} from '@/app/components';
-import TaskActions from './TaskActions';
-import { Task, Status } from "@prisma/client";
-import NextLink from 'next/link';
+import { Status, Task } from "@prisma/client";
 import { ArrowUpIcon } from "@radix-ui/react-icons";
-
+import { Table } from '@radix-ui/themes';
+import NextLink from 'next/link';
+import TaskActions from './TaskActions';
 interface Props { 
-  searchParams: { status: Status, orderBy: keyof Task  }
+  searchParams: { 
+    status: Status, 
+    orderBy: keyof Task,
+    page: string 
+  };
 }
 
 const TasksPage = async ({ searchParams }: Props) => {
@@ -38,6 +42,8 @@ const TasksPage = async ({ searchParams }: Props) => {
   const status = statuses.includes(searchParams.status) 
     ? searchParams.status
     : undefined;
+  
+  const where = { status };
 
   const orderBy = columns
   .map(column => column.value)
@@ -45,12 +51,18 @@ const TasksPage = async ({ searchParams }: Props) => {
   ? { [searchParams.orderBy]: 'asc' }
   : undefined;
 
+  const page = parseInt(searchParams.page) || 1;
+  const pageSize = 10;
+
   const tasks = await prisma.task.findMany({
-    where: {
-      status,
-    },
-    orderBy
+    where,
+    orderBy,
+    skip: (page - 1) * pageSize,
+    take: pageSize
   });
+
+  const taskCount = await prisma.task.count({ where })
+
   return (
     <div>
       <TaskActions />
@@ -87,6 +99,11 @@ const TasksPage = async ({ searchParams }: Props) => {
           ))}
         </Table.Body>
       </Table.Root>
+      <Pagination
+        pageSize={pageSize}
+        currentPage={page}
+        itemCount={taskCount}
+      />
     </div>
   );
 };
