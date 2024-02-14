@@ -1,5 +1,7 @@
 import prisma from "@/prisma/client";
 import TaskSummary from "./TaskSummary";
+import TaskChart from "./TaskChart";
+import LatestTasks from "./LatestTasks";
 
 export default async function Home() {
   const open = await prisma.task.count({
@@ -12,5 +14,5 @@ export default async function Home() {
     where: { status: "CLOSED" },
   });
 
-  return <TaskSummary open={open} inProgress={inProgress} closed={closed} />;
+  return <TaskChart open={open} inProgress={inProgress} closed={closed} />;
 }
