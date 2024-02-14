@@ -1,9 +1,10 @@
 import Pagination from "@/app/components/Pagination";
 import prisma from "@/prisma/client";
 import { Status } from "@prisma/client";
+import { Flex } from "@radix-ui/themes";
+import { Metadata } from "next";
 import TaskActions from "./TaskActions";
 import TaskTable, { TaskQuery, columnNames } from "./TaskTable";
-import { Flex } from "@radix-ui/themes";
 
 interface Props {
   searchParams: TaskQuery;
@@ -47,5 +48,10 @@ const TasksPage = async ({ searchParams }: Props) => {
 };
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Task Tracker - Task List",
+  description: "View all project tasks",
+};
 
 export default TasksPage;

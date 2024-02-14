@@ -1,5 +1,6 @@
 import prisma from "@/prisma/client";
 import { Flex, Grid } from "@radix-ui/themes";
+import { Metadata } from "next";
 import LatestTasks from "./LatestTasks";
 import TaskChart from "./TaskChart";
 import TaskSummary from "./TaskSummary";
@@ -25,3 +26,8 @@ export default async function Home() {
     </Grid>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Task Tracker - Dashboard",
+  description: "View a summary of project tasks",
+};
