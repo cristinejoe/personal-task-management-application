@@ -1,7 +1,8 @@
 import prisma from "@/prisma/client";
-import TaskSummary from "./TaskSummary";
-import TaskChart from "./TaskChart";
+import { Flex, Grid } from "@radix-ui/themes";
 import LatestTasks from "./LatestTasks";
+import TaskChart from "./TaskChart";
+import TaskSummary from "./TaskSummary";
 
 export default async function Home() {
   const open = await prisma.task.count({
@@ -14,5 +15,13 @@ export default async function Home() {
     where: { status: "CLOSED" },
   });
 
-  return <TaskChart open={open} inProgress={inProgress} closed={closed} />;
+  return (
+    <Grid columns={{ initial: "1", md: "2" }} gap="5">
+      <Flex direction="column" gap="5">
+        <TaskSummary open={open} inProgress={inProgress} closed={closed} />
+        <TaskChart open={open} inProgress={inProgress} closed={closed} />
+      </Flex>
+      <LatestTasks />
+    </Grid>
+  );
 }
