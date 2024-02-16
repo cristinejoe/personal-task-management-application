@@ -8,6 +8,7 @@ import AssigneeSelect from "./AssigneeSelect";
 import DeleteTaskButton from "./DeleteTaskButton";
 import EditTaskButton from "./EditTaskButton";
 import TaskDetails from "./TaskDetails";
+import StatusSelect from "./StatusSelect";
 
 interface Props {
   params: { id: string };
@@ -32,6 +33,7 @@ const TaskDetailPage = async ({ params }: Props) => {
       {session && (
         <Box>
           <Flex direction="column" gap="4">
+            <StatusSelect task={task} />
             <AssigneeSelect task={task} />
             <EditTaskButton taskId={task.id} />
             <DeleteTaskButton taskId={task.id} />

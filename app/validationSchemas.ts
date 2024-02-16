@@ -20,6 +20,8 @@ export const taskSchema = z.object({
                 return value;
             }
         }),
+    status: z.enum(["OPEN", "IN_PROGRESS", "CLOSED"]).optional()
+
 });
 
 
@@ -49,4 +51,6 @@ export const patchTaskSchema = z.object({
         .max(255)
         .optional()
         .nullable(),
+    status: z.enum(["OPEN", "IN_PROGRESS", "CLOSED"]).optional()
+
     });
